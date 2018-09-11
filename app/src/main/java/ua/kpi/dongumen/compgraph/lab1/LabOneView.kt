@@ -12,7 +12,7 @@ class LabOneView : View {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    var count = 10
+    var count = 1
     private var degrees: Float = 0F
         get() = 360F / count
     private var colorStep: Int = 0
@@ -24,8 +24,8 @@ class LabOneView : View {
                 .apply { strokeWidth = 2f }
     }
     private val path = Path()
-    var internalRadius = 400F
-    var radius = 100F
+    var internalRadius = 100F
+    var radius = 1F
     private val rectF = RectF(0f, radius, 0f, (radius + internalRadius *2))
 
 
@@ -48,13 +48,13 @@ class LabOneView : View {
         }
     }
 
-    private fun initV4(halfRadius: Float, halfWidth: Float) {
+    private fun initV4(halfRadius: Float, halfWidth: Float, halfHeight: Float) {
         path.reset()
         path.addRect(rectF, Path.Direction.CW)
-        path.moveTo((halfWidth - halfRadius), radius)
-        path.lineTo((halfWidth + halfRadius), (radius + internalRadius))
-        path.moveTo((halfWidth + halfRadius), radius)
-        path.lineTo((halfWidth - halfRadius), (radius + internalRadius))
+        path.moveTo(halfWidth - internalRadius, halfHeight - internalRadius * 2 - radius)
+        path.lineTo(halfWidth + internalRadius, halfHeight - radius)
+        path.moveTo(halfWidth + internalRadius, halfHeight - internalRadius * 2 - radius)
+        path.lineTo(halfWidth - internalRadius, halfHeight - radius)
     }
 
     private fun initV7(halfRadius: Float, halfWidth: Float, halfHeight: Float) {
