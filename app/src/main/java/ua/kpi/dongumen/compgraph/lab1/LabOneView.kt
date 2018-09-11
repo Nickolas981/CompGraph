@@ -1,11 +1,11 @@
-package ua.kpi.dongumen.compgraph
+package ua.kpi.dongumen.compgraph.lab1
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
-class MyView : View {
+class LabOneView : View {
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

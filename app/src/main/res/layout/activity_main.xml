@@ -6,30 +6,11 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ua.kpi.dongumen.compgraph.MyView
-        android:id="@+id/my_view"
+    <Button
+        android:id="@+id/first_lab"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
-    <SeekBar
-        android:id="@+id/radius"
-        android:layout_width="match_parent"
-        android:max="200"
-        android:min="1"
-        android:layout_height="30dp" />
-    <SeekBar
-        android:id="@+id/internal_radius"
-        android:layout_width="match_parent"
-        android:max="200"
-        android:min="100"
-        android:layout_height="30dp" />
-    <SeekBar
-        android:id="@+id/count"
-        android:layout_width="match_parent"
-        android:max="30"
-        android:min="1"
-        android:layout_height="30dp" />
+        android:layout_height="60dp"
+        android:layout_margin="8dp"
+        android:text="@string/first_lab" />
 
 </LinearLayout>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CompGraph</string>
+    <string name="first_lab">First lab</string>
 </resources>
