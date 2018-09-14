@@ -7,6 +7,7 @@ import ua.kpi.dongumen.compgraph.extensions.onClick
 import ua.kpi.dongumen.compgraph.extensions.startActivity
 import ua.kpi.dongumen.compgraph.lab1.LabOneActivity
 import ua.kpi.dongumen.compgraph.lab2.LabTwoActivity
+import ua.kpi.dongumen.compgraph.lab3.LabThreeActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,5 +17,6 @@ class MainActivity : AppCompatActivity() {
 
         first_lab.onClick { startActivity<LabOneActivity>() }
         second_lab.onClick { startActivity<LabTwoActivity>() }
+        third_lab.onClick { startActivity<LabThreeActivity>() }
     }
 }

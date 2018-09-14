@@ -20,4 +20,11 @@
         android:layout_margin="8dp"
         android:text="@string/second_lab" />
 
+    <Button
+        android:id="@+id/third_lab"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="8dp"
+        android:text="@string/second_lab" />
+
 </LinearLayout>
