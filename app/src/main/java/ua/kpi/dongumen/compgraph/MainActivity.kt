@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import ua.kpi.dongumen.compgraph.extensions.onClick
 import ua.kpi.dongumen.compgraph.extensions.startActivity
 import ua.kpi.dongumen.compgraph.lab1.LabOneActivity
+import ua.kpi.dongumen.compgraph.lab2.LabTwoActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,5 +15,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         first_lab.onClick { startActivity<LabOneActivity>() }
+        second_lab.onClick { startActivity<LabTwoActivity>() }
     }
 }
