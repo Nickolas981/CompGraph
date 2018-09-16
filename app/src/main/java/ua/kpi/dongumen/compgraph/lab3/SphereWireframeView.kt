@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 
 
-class SphereWirefremeView : View {
+class SphereWireframeView : View {
 
     constructor(context: Context) : super(context)
 
@@ -25,13 +25,13 @@ class SphereWirefremeView : View {
     var offsetX = 0f
     var offsetY = 0f
 
-    var lastX = -1.0
-    var lastY = -1.0
+    private var lastX = -1.0
+    private var lastY = -1.0
 
     private val foregroundPath = Path()
     private val backgroundPath = Path()
 
-    private val dotRotation = Point3D()
+    val dotRotation = Point3D()
 
     private val primaryPaint by lazy {
         Paint().apply { style = Paint.Style.STROKE }
@@ -104,7 +104,7 @@ class SphereWirefremeView : View {
     private fun strokeSegment(index: Int, width: Double, height: Double) {
         val x: Double
         val y: Double
-        val p = sphere.vertices[index]
+        val p = sphere.vertices[index].copy()
 
         rotateX(p, dotRotation.x)
         rotateY(p, dotRotation.y)
@@ -136,6 +136,6 @@ class SphereWirefremeView : View {
     }
 
     companion object {
-        val sphere = SphereWireframe3D(50.0)
+        var sphere = SphereWireframe3D(50.0)
     }
 }

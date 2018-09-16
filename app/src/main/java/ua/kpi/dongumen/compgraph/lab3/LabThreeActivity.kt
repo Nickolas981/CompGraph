@@ -32,7 +32,7 @@ class LabThreeActivity : AppCompatActivity() {
         mScaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         setTitle(R.string.second_lab)
 
-        toggleAnimation()
+//        toggleAnimation()
 //        blast()
     }
 
@@ -74,8 +74,8 @@ class LabThreeActivity : AppCompatActivity() {
                     val dx = x - mLastTouchX
                     val dy = y - mLastTouchY
 
-                    my_view3.offsetY += dy
-                    my_view3.offsetX += dx
+                    my_view3.dotRotation.y += dx / 1000
+                    my_view3.dotRotation.x += dy / 1000
 
                     my_view3.invalidate()
 
@@ -112,7 +112,7 @@ class LabThreeActivity : AppCompatActivity() {
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
-            my_view3.scale *= scaleGestureDetector.scaleFactor
+            SphereWireframeView.sphere = SphereWireframe3D(SphereWireframeView.sphere.radius * scaleGestureDetector.scaleFactor)
             my_view3.invalidate()
             return true
         }

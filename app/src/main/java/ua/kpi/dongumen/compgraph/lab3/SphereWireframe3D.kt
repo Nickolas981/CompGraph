@@ -6,7 +6,6 @@ class SphereWireframe3D(val radius: Double) {
     var vertices = mutableListOf<Point3D>()
     var rings = 20
     var slices = 20
-    var numberOfVertices = 0
 
     var halfPi = Math.PI / 2
     var dTheta = (Math.PI * 2) / this.slices
@@ -31,7 +30,6 @@ class SphereWireframe3D(val radius: Double) {
                 p.x = this.radius * cosTheta * cosPhi
                 p.y = this.radius * sinPhi
                 p.z = this.radius * sinTheta * cosPhi
-                this.numberOfVertices++
             }
         }
     }
