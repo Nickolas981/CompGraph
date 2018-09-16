@@ -1,9 +1,14 @@
 package ua.kpi.dongumen.compgraph.lab3
 
-import android.animation.ValueAnimator
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MotionEvent
 import android.view.MotionEvent.INVALID_POINTER_ID
 import android.view.ScaleGestureDetector
@@ -13,18 +18,21 @@ import ua.kpi.dongumen.compgraph.R
 
 class LabThreeActivity : AppCompatActivity() {
 
-    val handler = Handler()
-    val step = Math.PI / 90
+
     private var mActivePointerId = INVALID_POINTER_ID
     private var mLastTouchX = 0f
     private var mLastTouchY = 0f
-    private val rotation = Rotation({
-        my_view3.rotation = my_view3.rotation + step
-        my_view3.invalidate()
-    }, handler)
-    private var running = false
+
 
     private var mScaleGestureDetector: ScaleGestureDetector? = null
+    private val scrollInterpolation by lazy {
+        ScrollInterpolation({ x, y ->
+            my_view3.dotRotation.y += x / 1000
+            my_view3.dotRotation.x += y / 1000
+            my_view3.invalidate()
+        }, Handler())
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +40,6 @@ class LabThreeActivity : AppCompatActivity() {
         mScaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
         setTitle(R.string.second_lab)
 
-//        toggleAnimation()
-//        blast()
-    }
-
-    private fun toggleAnimation() {
-        if (running) {
-            handler.removeCallbacksAndMessages(null)
-        } else {
-            handler.postDelayed(rotation, 20)
-        }
-        running = !running
     }
 
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
@@ -59,6 +56,7 @@ class LabThreeActivity : AppCompatActivity() {
                 // Remember where we started (for dragging)
                 mLastTouchX = x
                 mLastTouchY = y
+                scrollInterpolation.refresh(0.0, 0.0)
                 // Save the ID of this pointer (for dragging)
                 mActivePointerId = motionEvent.getPointerId(0)
             }
@@ -74,10 +72,10 @@ class LabThreeActivity : AppCompatActivity() {
                     val dx = x - mLastTouchX
                     val dy = y - mLastTouchY
 
-                    my_view3.dotRotation.y += dx / 1000
-                    my_view3.dotRotation.x += dy / 1000
+                    Log.d("DY", dy.toString())
+                    Log.d("DX", dx.toString())
 
-                    my_view3.invalidate()
+                    scrollInterpolation.refresh(dx.toDouble(), dy.toDouble())
 
                     // Remember this touch position for the next move event
                     mLastTouchX = x
@@ -90,32 +88,54 @@ class LabThreeActivity : AppCompatActivity() {
         return true
     }
 
-    fun blast() {
-        val valueAnimator = ValueAnimator.ofFloat(0.01f, 10f, 0.01f)
-        valueAnimator.duration = 800
-        valueAnimator.addUpdateListener {
-            my_view3.scale = it.animatedValue as Float
-            my_view3.invalidate()
-        }
-        valueAnimator.repeatCount = ValueAnimator.INFINITE
-        valueAnimator.start()
-    }
-
-
-    class Rotation(val run: () -> Unit, val handler: Handler) : Runnable {
-        override fun run() {
-            run.invoke()
-            handler.postDelayed(this, 20)
-        }
-
-    }
-
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
             SphereWireframeView.sphere = SphereWireframe3D(SphereWireframeView.sphere.radius * scaleGestureDetector.scaleFactor)
             my_view3.invalidate()
             return true
         }
+    }
+
+    class ScrollInterpolation(private val run: (Double, Double) -> Unit, private val handler: Handler) {
+
+        @Volatile
+        private var scrollX = 0.0
+        @Volatile
+        private var scrollY = 0.0
+
+        fun refresh(dx: Double = scrollX, dy: Double = scrollY) {
+            scrollX = dx
+            scrollY = dy
+            handler.removeCallbacksAndMessages(null)
+            handler.post {
+                run.invoke(scrollX, scrollY)
+                when {
+                    scrollX < -1 -> when {
+                        scrollY < -1 -> refresh(scrollX + 0.1, scrollY + 0.1)
+                        scrollY > 1 -> refresh(scrollX + 0.1, scrollY - 0.1)
+                        else -> refresh(scrollX + 0.1)
+                    }
+                    scrollX > 1 -> when {
+                        scrollY < -1 -> refresh(scrollX - 0.1, scrollY + 0.1)
+                        scrollY > 1 -> refresh(scrollX - 0.1, scrollY - 0.1)
+                        else -> refresh(scrollX - 0.1)
+                    }
+                }
+                when {
+                    scrollY < -1 -> when {
+                        scrollX < -1 -> refresh(scrollX + 0.1, scrollY + 0.1)
+                        scrollX > 1 -> refresh(scrollX - 0.1, scrollY + 0.1)
+                        else -> refresh(scrollX + 0.1)
+                    }
+                    scrollY > 1 -> when {
+                        scrollX < -1 -> refresh(scrollX + 0.1, scrollY - 0.1)
+                        scrollX > 1 -> refresh(scrollX - 0.1, scrollY - 0.1)
+                        else -> refresh(scrollX - 0.1)
+                    }
+                }
+            }
+        }
+
     }
 
 }

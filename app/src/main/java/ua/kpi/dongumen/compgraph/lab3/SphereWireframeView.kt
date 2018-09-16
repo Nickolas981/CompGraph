@@ -19,11 +19,6 @@ class SphereWireframeView : View {
 
     var rotation = 0.0
     private var distance = 800.0
-    var scale = 1f
-
-
-    var offsetX = 0f
-    var offsetY = 0f
 
     private var lastX = -1.0
     private var lastY = -1.0
@@ -31,6 +26,7 @@ class SphereWireframeView : View {
     private val foregroundPath = Path()
     private val backgroundPath = Path()
 
+    private var oldDotRotation = Point3D()
     val dotRotation = Point3D()
 
     private val primaryPaint by lazy {
@@ -96,19 +92,25 @@ class SphereWireframeView : View {
             }
             i++
         }
+        oldDotRotation.x = dotRotation.x
+        oldDotRotation.y = dotRotation.y
+        oldDotRotation.z = dotRotation.z
 
         ctx.drawPath(backgroundPath, hintPaint)
         ctx.drawPath(foregroundPath, primaryPaint)
     }
+
 
     private fun strokeSegment(index: Int, width: Double, height: Double) {
         val x: Double
         val y: Double
         val p = sphere.vertices[index].copy()
 
+
         rotateX(p, dotRotation.x)
         rotateY(p, dotRotation.y)
         rotateZ(p, dotRotation.z)
+
 
         x = projection(p.x, p.z, width / 2.0, 100.0, distance)
         y = projection(p.y, p.z, height / 2.0, 100.0, distance)
@@ -119,19 +121,19 @@ class SphereWireframeView : View {
             return
         }
 
-            if (p.z < 0) {
-                backgroundPath.moveTo(lastX.toFloat(), lastY.toFloat())
-                backgroundPath.lineTo(x.toFloat(), y.toFloat())
-            } else {
-                foregroundPath.moveTo(lastX.toFloat(), lastY.toFloat())
-                foregroundPath.lineTo(x.toFloat(), y.toFloat())
-            }
+        if (p.z < 0) {
+            backgroundPath.moveTo(lastX.toFloat(), lastY.toFloat() )
+            backgroundPath.lineTo(x.toFloat(), y.toFloat() )
+        } else {
+            foregroundPath.moveTo(lastX.toFloat(), lastY.toFloat())
+            foregroundPath.lineTo(x.toFloat(), y.toFloat())
+        }
 
-            lastX = x
-            lastY = y
+        lastX = x
+        lastY = y
     }
 
     companion object {
-        var sphere = SphereWireframe3D(50.0)
+        var sphere = SphereWireframe3D(10.0)
     }
 }

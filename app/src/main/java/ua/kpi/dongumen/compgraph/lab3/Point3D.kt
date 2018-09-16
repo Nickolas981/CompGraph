@@ -8,7 +8,7 @@ class Point3D {
 
     fun copy() : Point3D {
         return Point3D()
-                .also { it.x = x }
+                .also { it.x = x}
                 .also { it.y = y }
                 .also { it.z = z }
     }
