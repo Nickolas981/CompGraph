@@ -1,5 +1,6 @@
 package ua.kpi.dongumen.compgraph.lab3
 
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
@@ -32,7 +33,7 @@ class LabThreeActivity : AppCompatActivity() {
         setTitle(R.string.second_lab)
 
         toggleAnimation()
-
+//        blast()
     }
 
     private fun toggleAnimation() {
@@ -87,6 +88,17 @@ class LabThreeActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    fun blast() {
+        val valueAnimator = ValueAnimator.ofFloat(0.01f, 10f, 0.01f)
+        valueAnimator.duration = 800
+        valueAnimator.addUpdateListener {
+            my_view3.scale = it.animatedValue as Float
+            my_view3.invalidate()
+        }
+        valueAnimator.repeatCount = ValueAnimator.INFINITE
+        valueAnimator.start()
     }
 
 
