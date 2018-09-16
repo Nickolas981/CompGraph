@@ -119,20 +119,16 @@ class SphereWireframeView : View {
             return
         }
 
-        if (x >= 0 && x < width && y >= 0 && y < height) {
             if (p.z < 0) {
                 backgroundPath.moveTo(lastX.toFloat(), lastY.toFloat())
                 backgroundPath.lineTo(x.toFloat(), y.toFloat())
-//                ctx.drawLine(lastX.toFloat(), lastY.toFloat(), x.toFloat(), y.toFloat(), hintPaint)
             } else {
                 foregroundPath.moveTo(lastX.toFloat(), lastY.toFloat())
                 foregroundPath.lineTo(x.toFloat(), y.toFloat())
-//                ctx.drawLine(lastX.toFloat(), lastY.toFloat(), x.toFloat(), y.toFloat(), primaryPaint)
             }
 
             lastX = x
             lastY = y
-        }
     }
 
     companion object {
